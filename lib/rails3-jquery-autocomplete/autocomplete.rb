@@ -53,6 +53,14 @@ module Rails3JQueryAutocomplete
             class_name = options[:class_name] || object
             items = get_autocomplete_items(:model => get_object(class_name), \
               :options => options, :term => term, :method => method)
+
+            if items.empty? and term.split(' ').length >= 2
+              terms = term.split(' ')
+              terms.each do |term|
+                items += get_autocomplete_items(:model => get_object(class_name), \
+                  :options => options, :term => term, :method => method)
+              end
+            end
           else
             items = {}
           end
