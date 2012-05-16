@@ -44,7 +44,7 @@ module Rails3JQueryAutocomplete
         like_clause = (postgres?(model) ? 'ILIKE' : 'LIKE')
 
         query = "LOWER(#{table_name}.#{method}) #{like_clause} :liked_term"
-        if is_similarity
+        if is_similarity and postgres?(model)
           query += " OR LOWER(#{table_name}.#{method}) #{similarity_clause} :term"
         end
 
