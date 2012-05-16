@@ -6,7 +6,7 @@ module Rails3JQueryAutocomplete
 
         table_prefix = model ? "#{model.table_name}." : ""
         if options[:similarity] and postgres?(model)
-          order || ["#{table_prefix}#{method} <-> '#{term}' ASC", # SQL Injection anyone? FIXME ASAP!
+          order || ["#{table_prefix}#{method} <-> #{model.quote_value(term)} ASC",
                     "#{table_prefix}#{method} ASC"]
         else
           order || "#{table_prefix}#{method} ASC"
