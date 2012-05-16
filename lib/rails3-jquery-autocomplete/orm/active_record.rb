@@ -1,11 +1,15 @@
 module Rails3JQueryAutocomplete
   module Orm
     module ActiveRecord
-      def get_autocomplete_order(method, options, model=nil)
+      def get_autocomplete_order(method, term, options, model=nil)
         order = options[:order]
 
         table_prefix = model ? "#{model.table_name}." : ""
-        order || "#{table_prefix}#{method} ASC"
+        if options[:similarity] and postgres?(model)
+          order || "#{table_prefix}#{method} <-> '#{term}' ASC" # SQL Injection anyone? FIXME!
+        else
+          order || "#{table_prefix}#{method} ASC"
+        end
       end
 
       def get_autocomplete_items(parameters)
@@ -16,7 +20,7 @@ module Rails3JQueryAutocomplete
         scopes  = Array(options[:scopes])
         where   = options[:where]
         limit   = get_autocomplete_limit(options)
-        order   = get_autocomplete_order(method, options, model)
+        order   = get_autocomplete_order(method, term, options, model)
 
 
         items = model.scoped
