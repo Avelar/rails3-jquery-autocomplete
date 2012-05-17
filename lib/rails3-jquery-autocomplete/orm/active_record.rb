@@ -5,7 +5,7 @@ module Rails3JQueryAutocomplete
         order = options[:order]
 
         table_prefix = model ? "#{model.table_name}." : ""
-        if options[:similarity] and postgres?(model)
+        if options[:similarity] == 'db' and postgres?(model)
           order || ["#{table_prefix}#{method} <-> #{model.quote_value(term)} ASC",
                     "#{table_prefix}#{method} ASC"]
         else
@@ -49,7 +49,7 @@ module Rails3JQueryAutocomplete
         like_clause = (postgres?(model) ? 'ILIKE' : 'LIKE')
 
         query = "LOWER(#{table_name}.#{method}) #{like_clause} :liked_term"
-        if is_similarity and postgres?(model)
+        if is_similarity == 'db' and postgres?(model)
           query += " OR LOWER(#{table_name}.#{method}) #{similarity_clause} :term"
         end
 
