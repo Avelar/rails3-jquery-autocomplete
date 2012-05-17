@@ -71,6 +71,10 @@ module Rails3JQueryAutocomplete
             items = {}
           end
 
+          items.uniq!
+          items = items[0..get_autocomplete_limit(options)]
+          items = {} unless not items.empty?
+
           render :json => json_for_autocomplete(items, options[:display_value] ||= method, options[:extra_data])
         end
       end
