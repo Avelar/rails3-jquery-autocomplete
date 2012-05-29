@@ -53,7 +53,7 @@ module Rails3JQueryAutocomplete
             class_name = options[:class_name] || object
 
             items = get_autocomplete_items(:model => get_object(class_name), \
-              :options => options, :term => term, :method => method)
+              :options => options, :term => term, :method => method) || []
 
             if options[:similarity] == 'ruby' and term.split(' ').length >= 2
               require 'text'
