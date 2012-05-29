@@ -52,9 +52,11 @@ module Rails3JQueryAutocomplete
             #allow specifying fully qualified class name for model object
             class_name = options[:class_name] || object
 
+            items = get_autocomplete_items(:model => get_object(class_name), \
+              :options => options, :term => term, :method => method)
+
             if options[:similarity] == 'ruby' and term.split(' ').length >= 2
               require 'text'
-              items = []
               terms = term.split(' ')
               terms.each do |term|
                 items += get_autocomplete_items(:model => get_object(class_name), \
@@ -62,11 +64,11 @@ module Rails3JQueryAutocomplete
               end
 
               comparator = ::Text::WhiteSimilarity.new
-              items.sort_by! {|item| (item.send(method).downcase.strip.include? term.downcase.strip) ? -1 : -comparator.similarity(item.send(method).downcase.strip, term.downcase.strip) }
-            else
-              items = get_autocomplete_items(:model => get_object(class_name), \
-                :options => options, :term => term, :method => method)
+              items.sort_by! do |item|
+                (item.send(method).downcase.strip.include? term.downcase.strip) ? -1 : -comparator.similarity(item.send(method).downcase.strip, term.downcase.strip)
+              end
             end
+
           else
             items = {}
           end
