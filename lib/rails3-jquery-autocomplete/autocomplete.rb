@@ -70,7 +70,7 @@ module Rails3JQueryAutocomplete
             end
 
           else
-            items = {}
+            items = []
           end
 
           items.uniq!
