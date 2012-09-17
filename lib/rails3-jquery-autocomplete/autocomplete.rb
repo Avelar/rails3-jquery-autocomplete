@@ -54,12 +54,13 @@ module Rails3JQueryAutocomplete
 
             # Be a dirty boy for now!
             term = term.downcase.strip
+
+            term.sub(' s 3', ' s3')
+            term.sub(' s3', ' siii')
+
             if term == 'galaxy'
               term = 'galaxy s'
             end
-
-            term.sub('galaxy s 3', 'galaxy s3')
-            term.sub('galaxy s3', 'galaxy siii')
 
             items = get_autocomplete_items(:model => get_object(class_name), \
               :options => options, :term => term, :method => method) || []
@@ -67,9 +68,9 @@ module Rails3JQueryAutocomplete
             if options[:similarity] == 'ruby' and term.split(' ').length >= 2
               require 'text'
               terms = term.split(' ')
-              terms.each do |term|
+              terms.each do |term_|
                 items += get_autocomplete_items(:model => get_object(class_name), \
-                  :options => options, :term => term, :method => method)
+                  :options => options, :term => term_, :method => method)
               end
 
               comparator = ::Text::WhiteSimilarity.new
