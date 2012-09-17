@@ -54,8 +54,8 @@ module Rails3JQueryAutocomplete
 
             # Be a dirty boy for now!
             term = term.downcase.strip
-            term['galaxy s 3'] = 'galaxy s3'
-            term['galaxy s3'] = 'galaxy siii'
+            term.sub('galaxy s 3', 'galaxy s3')
+            term.sub('galaxy s3', 'galaxy siii')
 
             items = get_autocomplete_items(:model => get_object(class_name), \
               :options => options, :term => term, :method => method) || []
