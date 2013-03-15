@@ -55,8 +55,17 @@ module Rails3JQueryAutocomplete
             # Be a dirty boy for now!
             term = term.downcase.strip
 
+            term.sub!('galaxy s 2', 'galaxy s2')
+            term.sub!('galaxy s2', 'galaxy sii')
+
             term.sub!('galaxy s 3', 'galaxy s3')
             term.sub!('galaxy s3', 'galaxy siii')
+
+            term.sub!('sansung', 'samsung')
+            term.sub!('samsumg', 'samsung')
+            term.sub!('sansumg', 'samsung')
+
+            term.sub!('iphone 4 s', 'iphone 4s')
 
             if term == 'galaxy'
               term = 'galaxy s'
